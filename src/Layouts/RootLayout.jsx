@@ -6,6 +6,7 @@ import Home from '../Home/Home';
 import About from '../Home/About';
 import Banner from '../Home/Banner';
 import Projects from '../Home/Projects';
+import Skills from '../Home/Skills';
 
 const RootLayout = () => {
   return (
@@ -14,6 +15,7 @@ const RootLayout = () => {
       <Banner></Banner>
       <About></About>
       <Projects></Projects>
+      <Skills></Skills>
       <Footer></Footer>
     </div>
   );
