@@ -1,33 +1,38 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { FaGithub } from 'react-icons/fa';
+import { RiLiveLine } from 'react-icons/ri';
 
 const projects = [
   {
-    title: "Portfolio Website",
-    desc: "A modern personal portfolio built with React and Node.js, featuring animations and responsive design.",
-    tech: ["React", "Node.js", "Express", "MongoDB"],
-    link: "#",
-    img: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80"
+    title: 'Portfolio Website',
+    desc: 'A modern personal portfolio built with React and Node.js, featuring animations and responsive design.',
+    tech: ['React', 'Node.js', 'Express', 'MongoDB'],
+    link: '#',
+    gitLink: '',
+    img: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80',
   },
   {
-    title: "E-Commerce Platform",
-    desc: "Full-featured MERN stack e-commerce app with payment integration and admin dashboard.",
-    tech: ["React", "Redux", "Node.js", "MongoDB"],
-    link: "#",
-    img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80"
+    title: 'E-Commerce Platform',
+    desc: 'Full-featured MERN stack e-commerce app with payment integration and admin dashboard.',
+    tech: ['React', 'Redux', 'Node.js', 'MongoDB'],
+    link: '#',
+    gitLink: '',
+    img: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80',
   },
   {
-    title: "Blog Application",
-    desc: "A responsive blog platform with authentication, CRUD features, and rich text editor.",
-    tech: ["React", "Express", "MongoDB"],
-    link: "#",
-    img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
-  }
+    title: 'Metrimony App',
+    desc: 'A responsive blog platform with authentication, CRUD features, and rich text editor.',
+    tech: ['React', 'Express', 'MongoDB', 'tailwindcss'],
+    link: 'https://metrimony-auth.web.app/',
+    gitLink: 'https://github.com/Jabedhossain101/Metrimony-web-client',
+    img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
+  },
 ];
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0 }
+  visible: { opacity: 1, y: 0 },
 };
 
 const Projects = () => {
@@ -64,9 +69,31 @@ const Projects = () => {
                     <span key={i}>{t}</span>
                   ))}
                 </div>
-                <a href={project.link} className="project-link" target="_blank" rel="noopener noreferrer">
-                  View Project
-                </a>
+                <div className="flex justify-between items-center w-full">
+                  <a
+                    href={project.link}
+                    className="project-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <div className='flex items-center gap-1'>
+                      <RiLiveLine />
+                      Live
+                    </div>
+                  </a>
+                  <a
+                    href={project.gitLink}
+                    className="github-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <div className="flex items-center gap-1">
+                      {' '}
+                      <FaGithub className="text-2xl" />
+                      SOURCE CODE
+                    </div>
+                  </a>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -161,6 +188,16 @@ const Projects = () => {
           transition: background 0.2s, color 0.2s;
           box-shadow: 0 2px 8px rgba(44,83,100,0.10);
         }
+          .github-link {
+          background:  #00c6ff;
+          color: #fff;
+          font-weight: 600;
+          padding: 0.5rem 1.3rem;
+          border-radius: 20px;
+          text-decoration: none;
+          transition: background 0.2s, color 0.2s;
+          box-shadow: 0 2px 8px rgba(44,83,100,0.10);
+        } 
         .project-link:hover {
           background: #00c6ff;
           color: #fff;

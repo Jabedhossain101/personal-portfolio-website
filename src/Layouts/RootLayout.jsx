@@ -8,6 +8,7 @@ import Banner from '../Home/Banner';
 import Projects from '../Home/Projects';
 import Skills from '../Home/Skills';
 import Contact from '../Home/Contact';
+import Education from '../Home/Education';
 
 const RootLayout = () => {
   return (
@@ -17,6 +18,7 @@ const RootLayout = () => {
       <About></About>
       <Projects></Projects>
       <Skills></Skills>
+      <Education></Education>
       <Contact></Contact>
       <Footer></Footer>
     </div>
