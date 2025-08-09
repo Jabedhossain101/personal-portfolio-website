@@ -1,42 +1,71 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { FaHome, FaUser, FaCode, FaTools, FaEnvelope, FaGraduationCap } from 'react-icons/fa';
 
 const Navbar = () => {
   return (
-    <nav className="navbar">
+    <motion.nav
+      className="navbar"
+      initial={{ y: -80 }}
+      animate={{ y: 0 }}
+      transition={{ type: 'spring', stiffness: 60, duration: 0.6 }}
+    >
       <div className="navbar-container">
-        <div className="navbar-logo">
+        <motion.div
+          className="navbar-logo"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
           <span>MD Jabed Hossain</span>
-        </div>
+        </motion.div>
+
         <input type="checkbox" id="menu-toggle" className="menu-toggle" />
         <label htmlFor="menu-toggle" className="menu-icon">
           <span></span>
           <span></span>
           <span></span>
         </label>
+
         <ul className="navbar-links">
           <li>
-            <a href="#home">Home</a>
+            <a href="#home">
+              <FaHome /> Home
+            </a>
           </li>
           <li>
-            <a href="#about">About</a>
+            <a href="#about">
+              <FaUser /> About
+            </a>
           </li>
           <li>
-            <a href="#projects">Projects</a>
+            <a href="#projects">
+              <FaCode /> Projects
+            </a>
           </li>
           <li>
-            <a href="#skills">Skills</a>
+            <a href="#skills">
+              <FaTools /> Skills
+            </a>
           </li>
           <li>
-            <a href="#contact">Contact</a>
+            <a href="#education">
+              <FaGraduationCap /> Education
+            </a>
+          </li>
+          <li>
+            <a href="#contact">
+              <FaEnvelope /> Contact
+            </a>
           </li>
         </ul>
       </div>
-      {/* Inline styles for demo, move to CSS file for production */}
+
       <style>{`
         .navbar {
           background: linear-gradient(90deg, #0f2027, #2c5364);
           box-shadow: 0 4px 16px rgba(44,83,100,0.15);
-          padding: 0.5rem 0;
+          padding: 0.6rem 0;
           position: sticky;
           top: 0;
           z-index: 100;
@@ -52,7 +81,7 @@ const Navbar = () => {
         .navbar-logo span {
           font-size: 1.7rem;
           font-weight: bold;
-          color: #fff;
+          color: #00c6ff;
           letter-spacing: 2px;
           font-family: 'Montserrat', sans-serif;
         }
@@ -62,14 +91,18 @@ const Navbar = () => {
           gap: 2rem;
           margin: 0;
           padding: 0;
+          align-items: center;
         }
         .navbar-links li a {
           color: #fff;
           text-decoration: none;
           font-size: 1.1rem;
           font-weight: 500;
-          transition: color 0.2s;
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
           position: relative;
+          transition: color 0.3s;
         }
         .navbar-links li a::after {
           content: '';
@@ -88,6 +121,7 @@ const Navbar = () => {
         .navbar-links li a:hover {
           color: #00c6ff;
         }
+
         .menu-icon {
           display: none;
           flex-direction: column;
@@ -106,6 +140,7 @@ const Navbar = () => {
         .menu-toggle {
           display: none;
         }
+
         @media (max-width: 768px) {
           .navbar-container {
             padding: 0 1rem;
@@ -130,7 +165,8 @@ const Navbar = () => {
           }
         }
       `}</style>
-    </nav>
+    </motion.nav>
   );
 };
+
 export default Navbar;

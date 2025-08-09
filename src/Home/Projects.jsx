@@ -13,12 +13,12 @@ const projects = [
     img: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80',
   },
   {
-    title: 'E-Commerce Platform',
+    title: 'Plant care App',
     desc: 'Full-featured MERN stack e-commerce app with payment integration and admin dashboard.',
     tech: ['React', 'Redux', 'Node.js', 'MongoDB'],
-    link: '#',
-    gitLink: '',
-    img: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80',
+    link: 'https://mango-store-app.web.app/',
+    gitLink: 'https://github.com/Jabedhossain101/Mango-client',
+    img: 'https://i.ibb.co.com/v4Ds8Htq/image.png',
   },
   {
     title: 'Metrimony App',
@@ -26,7 +26,7 @@ const projects = [
     tech: ['React', 'Express', 'MongoDB', 'tailwindcss'],
     link: 'https://metrimony-auth.web.app/',
     gitLink: 'https://github.com/Jabedhossain101/Metrimony-web-client',
-    img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
+    img: 'https://i.ibb.co.com/5XV4G5rN/image.png',
   },
 ];
 
@@ -78,7 +78,7 @@ const Projects = () => {
                   >
                     <div className='flex items-center gap-1'>
                       <RiLiveLine />
-                      Live
+                      Live Demo
                     </div>
                   </a>
                   <a
@@ -90,7 +90,7 @@ const Projects = () => {
                     <div className="flex items-center gap-1">
                       {' '}
                       <FaGithub className="text-2xl" />
-                      SOURCE CODE
+                       CODE
                     </div>
                   </a>
                 </div>
