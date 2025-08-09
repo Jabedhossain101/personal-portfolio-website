@@ -18,7 +18,7 @@ const projects = [
     tech: ['React', 'Redux', 'Node.js', 'MongoDB'],
     link: 'https://mango-store-app.web.app/',
     gitLink: 'https://github.com/Jabedhossain101/Mango-client',
-    img: 'https://i.ibb.co.com/v4Ds8Htq/image.png',
+    img: 'https://i.ibb.co.com/wZFHQ1Y8/image.png',
   },
   {
     title: 'Metrimony App',

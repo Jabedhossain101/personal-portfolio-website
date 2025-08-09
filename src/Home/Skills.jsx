@@ -1,17 +1,32 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { FaCss3Alt, FaGitAlt, FaGithub, FaHtml5, FaJava, FaReact } from 'react-icons/fa';
+import { RiNodejsLine } from 'react-icons/ri';
+import { SiExpress, SiFirebase, SiNextdotjs, SiRedux } from 'react-icons/si';
+import { BiLogoMongodb } from 'react-icons/bi';
+import { TbBrandCpp, TbBrandJavascript } from 'react-icons/tb';
+import { LuFigma } from 'react-icons/lu';
 
 const skills = [
-  { name: 'React', color: '#61dafb', icon: '⚛️' },
-  { name: 'Node.js', color: '#68a063', icon: '🟩' },
-  { name: 'Express', color: '#fff', icon: '🚂' },
-  { name: 'MongoDB', color: '#4db33d', icon: '🍃' },
-  { name: 'JavaScript', color: '#f7df1e', icon: '🟨' },
-  { name: 'HTML5', color: '#e34c26', icon: '🟧' },
-  { name: 'CSS3', color: '#2965f1', icon: '🟦' },
-  { name: 'Redux', color: '#764abc', icon: '🔄' },
-  { name: 'Git', color: '#f34f29', icon: '🔗' },
-  { name: 'Figma', color: '#a259ff', icon: '🎨' },
+  { name: 'React', color: '#61dafb', icon: <FaReact /> },
+  { name: 'Node.js', color: '#68a063', icon: <RiNodejsLine /> },
+  { name: 'Express', color: '#fff', icon: <SiExpress /> },
+  {
+    name: 'MongoDB',
+    color: '#4db33d',
+    icon: <BiLogoMongodb />,
+  },
+  { name: 'JavaScript', color: '#f7df1e', icon: <TbBrandJavascript /> },
+  { name: 'HTML5', color: '#e34c26', icon: <FaHtml5 /> },
+  { name: 'CSS3', color: '#2965f1', icon: <FaCss3Alt /> },
+  { name: 'Redux', color: '#764abc', icon: <SiRedux /> },
+  { name: 'Git', color: '#f34f29', icon: <FaGithub /> },
+  { name: 'Figma', color: '#a259ff', icon: <LuFigma /> },
+  { name: 'java', color: '#a259ff', icon: <FaJava /> },
+  { name: 'C++', color: '#a259ff', icon: <TbBrandCpp /> },
+  { name: 'git', color: '#a259ff', icon: <FaGitAlt /> },
+  { name: 'firebase', color: '#a259ff', icon: <SiFirebase /> },
+  { name: 'Next js', color: '#a259ff', icon: <SiNextdotjs /> },
 ];
 
 const cardVariants = {
