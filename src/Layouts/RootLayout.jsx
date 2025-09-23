@@ -10,15 +10,17 @@ import Skills from '../Home/Skills';
 import Contact from '../Home/Contact';
 import Education from '../Home/Education';
 
+
 const RootLayout = () => {
   return (
     <div>
       <Navbar></Navbar>
       <Banner></Banner>
       <About></About>
-      <Projects></Projects>
       <Skills></Skills>
       <Education></Education>
+      <Projects></Projects>
+      
       <Contact></Contact>
       <Footer></Footer>
     </div>

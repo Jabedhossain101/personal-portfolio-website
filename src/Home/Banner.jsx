@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaFacebook } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaFacebook, FaArrowDown } from 'react-icons/fa';
 
 const RESUME_URL =
-  'https://drive.google.com/file/d/1OPRaHdaUoOj0tnkC3ABylq8LZ2uDsRUy/view?usp=sharing';
-
+  'https://drive.google.com/file/d/1Q7bIqfgZn0-L44a7ZS4i7FaFMo_6OvFX/view';
+  
 const Banner = () => {
   const handleResumeClick = async e => {
     e.preventDefault();
@@ -123,7 +123,9 @@ const Banner = () => {
               transition={{ type: 'spring', stiffness: 300 }}
               aria-label="View and download resume"
             >
-              View / Download Resume
+              <div className='flex items-center gap-2'>
+                <FaArrowDown className='text-2xl' /> <span>Download Resume</span>
+              </div>
             </motion.button>
           </div>
         </div>

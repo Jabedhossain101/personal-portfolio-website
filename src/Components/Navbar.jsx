@@ -1,8 +1,35 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaHome, FaUser, FaCode, FaTools, FaEnvelope, FaGraduationCap } from 'react-icons/fa';
+import { FaHome, FaUser, FaCode, FaTools, FaEnvelope, FaGraduationCap, FaArrowDown } from 'react-icons/fa';
 
 const Navbar = () => {
+  const handleResumeClick = async e => {
+    e.preventDefault();
+    const newTab = window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
+
+    try {
+      const res = await fetch(RESUME_URL, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Network response was not ok');
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'MD_Jabed_Hossain_Resume.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      if (newTab) {
+        console.warn(
+          'Automatic download failed — resume opened in a new tab.',
+          err
+        );
+      } else {
+        window.location.href = RESUME_URL;
+      }
+    }
+  };
   return (
     <motion.nav
       className="navbar"
@@ -17,7 +44,7 @@ const Navbar = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          <span>MD Jabed Hossain</span>
+          <span className='mr-12'>Jabed Hossain</span>
         </motion.div>
 
         <input type="checkbox" id="menu-toggle" className="menu-toggle" />
@@ -58,6 +85,17 @@ const Navbar = () => {
               <FaEnvelope /> Contact
             </a>
           </li>
+          <motion.button
+            onClick={handleResumeClick}
+            className="btn bg-[#00c6ff]"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            aria-label="View and download resume"
+          >
+            <div className="flex items-center">
+              <FaArrowDown className="text-lg" /> <span>Download Resume</span>
+            </div>
+          </motion.button>
         </ul>
       </div>
 

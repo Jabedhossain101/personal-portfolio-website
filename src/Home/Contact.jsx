@@ -33,13 +33,43 @@ const Contact = () => {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="contact-desc"
         >
-          Interested in working together or have a question? Fill out the form below and I'll get back to you soon!
+          Interested in working together or have a question? Fill out the form
+          below or reach me directly.
         </motion.p>
+
+        {/* Contact Info Section */}
+        <motion.div
+          className="contact-info"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          <p>
+            <strong>Email:</strong>{' '}
+            <a href="mailto:example@email.com">ahmedrafsan101@gmail.com</a>
+          </p>
+          <p>
+            <strong>Phone:</strong>{' '}
+            <a href="tel:+880123456789">+880-1887686535</a>
+          </p>
+          <p>
+            <strong>WhatsApp:</strong>{' '}
+            <a
+              href="https://wa.me/880123456789"
+              target="_blank"
+              rel="noreferrer"
+            >
+              +880 18876 865 35
+            </a>
+          </p>
+        </motion.div>
+
+        {/* Form */}
         <motion.form
           className="contact-form"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
           onSubmit={handleSubmit}
         >
           <input
@@ -72,7 +102,11 @@ const Contact = () => {
           <motion.button
             type="submit"
             className="contact-btn"
-            whileHover={{ scale: 1.05, backgroundColor: '#00c6ff', color: '#fff' }}
+            whileHover={{
+              scale: 1.05,
+              backgroundColor: '#00c6ff',
+              color: '#fff',
+            }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
             Send Message
@@ -89,6 +123,8 @@ const Contact = () => {
           )}
         </motion.form>
       </div>
+
+      {/* Styles */}
       <style>{`
         .contact {
           background: linear-gradient(120deg, #232526 0%, #2c5364 100%);
@@ -114,7 +150,22 @@ const Contact = () => {
         .contact-desc {
           font-size: 1.1rem;
           color: #e0e0e0;
+          margin-bottom: 1.5rem;
+        }
+        .contact-info {
+          background: rgba(0, 198, 255, 0.08);
+          padding: 1rem;
+          border-radius: 10px;
           margin-bottom: 2rem;
+          font-size: 1rem;
+          text-align: left;
+        }
+        .contact-info p {
+          margin: 0.5rem 0;
+        }
+        .contact-info a {
+          color: #00c6ff;
+          text-decoration: none;
         }
         .contact-form {
           display: flex;
@@ -166,10 +217,8 @@ const Contact = () => {
           .contact-desc {
             font-size: 1rem;
           }
-          .contact-input, .contact-textarea {
+          .contact-info {
             font-size: 0.95rem;
-            padding: 0.7rem 0.7rem;
-            max-width: 100%;
           }
         }
       `}</style>

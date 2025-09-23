@@ -73,7 +73,7 @@ const Education = () => {
           justify-content: center;
         }
         .education-container {
-          max-width: 1100px;
+          max-width: 1200px;
           margin: 0 auto;
           width: 100%;
         }

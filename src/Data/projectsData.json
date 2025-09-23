@@ -1,0 +1,59 @@
+[
+  {
+    "id": 1,
+    "title": "Medical Service Review System",
+    "desc": "A modern web application enabling users to review and rate medical services to promote transparency and assist patients in making informed decisions. Built with React for the frontend and Node.js with Express for the backend, the system uses MongoDB for data storage and Firebase for authentication. The app features user registration with JWT-based authentication, dynamic review submission, and a responsive interface styled with TailwindCSS.",
+    "tech": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "Firebase",
+      "JWT",
+      "TailwindCSS"
+    ],
+    "img": "https://i.ibb.co/7MYCNBH/image.png",
+    "link": "https://service-review-system-51389.web.app/",
+    "gitLink": "https://github.com/Jabedhossain101/Medical-service-review-system",
+    "challenges": "Implementing secure JWT authentication with Firebase integration and designing a smooth, responsive UI were key challenges. Maintaining data consistency while allowing concurrent reviews required careful backend handling.",
+    "futurePlans": "Enhance the platform with improved SEO, add a contact form with email notifications, and incorporate advanced filtering for medical service reviews."
+  },
+  {
+    "id": 2,
+    "title": "Plant Care App",
+    "desc": "A comprehensive MERN stack application that helps users manage and track the care of their plants. It offers features such as watering reminders, health logging, and user authentication via Firebase. The backend is built with Node.js and Express, storing data in MongoDB. The frontend, built with React and styled using TailwindCSS, ensures an intuitive and responsive user experience.",
+    "tech": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "Firebase",
+      "JWT",
+      "TailwindCSS"
+    ],
+    "img": "https://i.ibb.co/wZFHQ1Y8/image.png",
+    "link": "https://mango-store-app.web.app/",
+    "gitLink": "https://github.com/Jabedhossain101/Mango-client",
+    "challenges": "Integrating real-time reminders and notifications while synchronizing user data across devices posed significant challenges. Creating a scalable schema for diverse plant data also required thoughtful design.",
+    "futurePlans": "Plan to add AI-assisted plant health diagnostics, expand reminder functionalities, and improve user engagement features."
+  },
+  {
+    "id": 3,
+    "title": "Metrimony App",
+    "desc": "A responsive matrimony platform facilitating user registration, biodata management, and premium membership functionalities. The application uses React for the frontend and Node.js with Express for backend services, along with MongoDB for database management. User authentication is handled through Firebase and JWT. The design is crafted with TailwindCSS to ensure responsiveness and modern aesthetics.",
+    "tech": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "Firebase",
+      "JWT",
+      "TailwindCSS"
+    ],
+    "img": "https://i.ibb.co/5XV4G5rN/image.png",
+    "link": "https://metrimony-auth.web.app/",
+    "gitLink": "https://github.com/Jabedhossain101/Metrimony-web-client",
+    "challenges": "Implementing a secure premium membership system and handling complex user data workflows required detailed backend logic. Maintaining smooth user experiences while ensuring data privacy was also a key concern.",
+    "futurePlans": "Future updates include AI-based matchmaking, enhanced chat features, and expanded premium services."
+  }
+]
