@@ -9,7 +9,12 @@ import {
   FaReact,
 } from 'react-icons/fa';
 import { RiNodejsLine, RiTailwindCssFill } from 'react-icons/ri';
-import { SiExpress, SiFirebase, SiJsonwebtokens, SiRedux } from 'react-icons/si';
+import {
+  SiExpress,
+  SiFirebase,
+  SiJsonwebtokens,
+  SiRedux,
+} from 'react-icons/si';
 import { BiLogoMongodb } from 'react-icons/bi';
 import { TbBrandCpp, TbBrandJavascript } from 'react-icons/tb';
 import { LuFigma } from 'react-icons/lu';
@@ -23,7 +28,7 @@ const categories = {
     { name: 'CSS3', color: '#2965f1', icon: <FaCss3Alt /> },
     { name: 'Redux', color: '#764abc', icon: <SiRedux /> },
     { name: 'Figma', color: '#a259ff', icon: <LuFigma /> },
-    { name: 'Tailwind css', color: '#a259ff', icon: <RiTailwindCssFill /> },
+    { name: 'Tailwind css', color: '#38bdf8', icon: <RiTailwindCssFill /> },
   ],
   Backend: [
     { name: 'Node.js', color: '#68a063', icon: <RiNodejsLine /> },
@@ -35,7 +40,6 @@ const categories = {
   Tools: [
     { name: 'Git', color: '#f34f29', icon: <FaGitAlt /> },
     { name: 'GitHub', color: '#181717', icon: <FaGithub /> },
-
     { name: 'VS Code', color: '#007acc', icon: <VscVscode /> },
   ],
   Programming_Language: [
@@ -47,37 +51,44 @@ const categories = {
 // Animation Variants
 const containerVariants = {
   hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
+  visible: { transition: { staggerChildren: 0.15 } },
 };
 
 const cardVariants = {
   hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 70, damping: 10 },
-  },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 70 } },
 };
 
-// Floating animation loop for cards
+// Floating animation loop
 const floatingAnimation = {
   animate: {
-    y: [0, -10, 0], // up and down
-    transition: {
-      yoyo: Infinity,
-      duration: 4,
-      ease: 'easeInOut',
-    },
+    y: [0, -10, 0],
+    transition: { yoyo: Infinity, duration: 4, ease: 'easeInOut' },
   },
 };
 
 const Skills = () => {
+  const starsArray = Array.from({ length: 80 });
+
   return (
     <section className="skills" id="skills">
+      {/* Background stars */}
+      <div className="skills-bg">
+        {starsArray.map((_, i) => (
+          <span
+            key={i}
+            className="star"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 2 + 1}px`,
+              height: `${Math.random() * 2 + 1}px`,
+              animationDelay: `${Math.random() * 5}s`,
+            }}
+          ></span>
+        ))}
+      </div>
+
       <div className="skills-container">
         <motion.h2
           initial={{ x: -40, opacity: 0 }}
@@ -105,17 +116,12 @@ const Skills = () => {
                   variants={cardVariants}
                   whileHover={{
                     scale: 1.1,
-                    boxShadow: '0 15px 35px rgba(0, 198, 255, 0.5)',
-                    transition: { duration: 0.3 },
+                    boxShadow: '0 15px 35px rgba(0,198,255,0.5)',
                   }}
                   whileTap={{ scale: 0.95 }}
                   {...floatingAnimation}
                 >
-                  <span
-                    className="skill-icon"
-                    style={{ color: skill.color }}
-                    aria-label={skill.name}
-                  >
+                  <span className="skill-icon" style={{ color: skill.color }}>
                     {skill.icon}
                   </span>
                   <span className="skill-name">{skill.name}</span>
@@ -128,99 +134,29 @@ const Skills = () => {
 
       <style>{`
         .skills {
-          background: linear-gradient(120deg, #232526 0%, #2c5364 100%);
+          position: relative;
+          background: #000;
           color: #fff;
-          padding: 4rem 1rem 3rem 1rem;
+          padding: 4rem 1rem;
           display: flex;
           justify-content: center;
+          overflow: hidden;
         }
-        .skills-container {
-          max-width: 1200px;
-          margin: 0 auto;
-          width: 100%;
-          text-align: center;
-        }
-        .skills-title {
-          font-size: 2.5rem;
-          font-weight: 700;
-          margin-bottom: 3rem;
-          letter-spacing: 2px;
-          font-family: 'Montserrat', sans-serif;
-          color: #00c6ff;
-        }
-        .category-section {
-          margin-bottom: 3rem;
-        }
-        .category-title {
-          font-size: 1.8rem;
-          font-weight: 700;
-          margin-bottom: 1.8rem;
-          color: #58d7ff;
-          font-family: 'Montserrat', sans-serif;
-          text-align: left;
-          border-left: 4px solid #00c6ff;
-          padding-left: 12px;
-        }
-        .skills-grid {
-          display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 2rem;
-          justify-items: center;
-        }
-        .skill-card {
-          background: #222a36;
-          border-radius: 20px;
-          box-shadow: 0 6px 20px rgba(0, 198, 255, 0.15);
-          width: 140px;
-          height: 160px;
-          padding: 1rem;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          cursor: default;
-          user-select: none;
-        }
-        .skill-icon {
-          font-size: 4.5rem;
-          margin-bottom: 1rem;
-          filter: drop-shadow(0 0 5px rgba(0,198,255,0.8));
-        }
-        .skill-name {
-          font-size: 1.15rem;
-          font-weight: 600;
-          color: #e0e0e0;
-        }
-        @media (max-width: 900px) {
-          .skills-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-          }
-          .category-title {
-            text-align: center;
-          }
-        }
-        @media (max-width: 600px) {
-          .skills-title {
-            font-size: 1.8rem;
-          }
-          .skills-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-          }
-          .skill-card {
-            width: 120px;
-            height: 140px;
-            padding: 0.8rem;
-          }
-          .skill-icon {
-            font-size: 3.8rem;
-            margin-bottom: 0.8rem;
-          }
-          .category-title {
-            font-size: 1.3rem;
-          }
-        }
+        .skills-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .star { position: absolute; background: #fff; border-radius: 50%; opacity: 0.3; animation: twinkle 2s infinite alternate; }
+        @keyframes twinkle { 0% { opacity: 0.1; } 50% { opacity: 1; } 100% { opacity: 0.1; } }
+
+        .skills-container { position: relative; z-index: 2; max-width: 1200px; width: 100%; text-align: center; }
+        .skills-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 3rem; color: #00c6ff; letter-spacing: 2px; }
+        .category-section { margin-bottom: 3rem; }
+        .category-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 1.8rem; text-align: left; border-left: 4px solid #00c6ff; padding-left: 12px; color: #58d7ff; }
+        .skills-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2rem; justify-items: center; }
+        .skill-card { background: #222a36; border-radius: 20px; box-shadow: 0 6px 20px rgba(0,198,255,0.15); width: 140px; height: 160px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; user-select: none; }
+        .skill-icon { font-size: 4.5rem; margin-bottom: 1rem; filter: drop-shadow(0 0 5px rgba(0,198,255,0.8)); }
+        .skill-name { font-size: 1.15rem; font-weight: 600; color: #e0e0e0; }
+
+        @media (max-width: 900px) { .skills-grid { grid-template-columns: repeat(3, 1fr); } .category-title { text-align: center; } }
+        @media (max-width: 600px) { .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; } .skill-card { width: 120px; height: 140px; } .skill-icon { font-size: 3.8rem; } .category-title { font-size: 1.3rem; } }
       `}</style>
     </section>
   );

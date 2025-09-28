@@ -4,6 +4,41 @@ import { motion } from 'framer-motion';
 const About = () => {
   return (
     <section className="about" id="about">
+      {/* Galaxy Background */}
+      <div className="galaxy-bg">
+        <div className="stars"></div>
+        <div className="stars2"></div>
+        <div className="stars3"></div>
+
+        {/* Solar System */}
+        <div className="solar-system">
+          <div className="orbit orbit1">
+            <div className="planet planet1"></div>
+          </div>
+          <div className="orbit orbit2">
+            <div className="planet planet2"></div>
+          </div>
+          <div className="orbit orbit3">
+            <div className="planet planet3"></div>
+          </div>
+          <div className="orbit orbit4">
+            <div className="planet planet4"></div>
+          </div>
+          <div className="orbit orbit5">
+            <div className="planet planet5"></div>
+          </div>
+          <div className="orbit orbit6">
+            <div className="planet planet6"></div>
+          </div>
+          <div className="orbit orbit7">
+            <div className="planet planet7"></div>
+          </div>
+          <div className="orbit orbit8">
+            <div className="planet planet8"></div>
+          </div>
+        </div>
+      </div>
+
       <div className="about-container">
         <motion.h2
           initial={{ x: -40, opacity: 0 }}
@@ -77,20 +112,93 @@ const About = () => {
           </ul>
         </motion.div>
       </div>
+
       <style>{`
         .about {
-          background: linear-gradient(120deg, #232526 0%, #2c5364 100%);
+          position: relative;
+          background: black;
+          overflow: hidden;
           color: #fff;
-          padding: 5rem 2rem 4rem 2rem;
-          display: flex;
-          justify-content: center;
+          padding: 5rem 2rem;
         }
+
+        /* Star background layers */
+        .stars, .stars2, .stars3 {
+          position: absolute;
+          width: 200%;
+          height: 200%;
+          background: transparent url("https://www.transparenttextures.com/patterns/stardust.png") repeat;
+          animation: move-stars 60s linear infinite;
+        }
+        .stars2 { animation-duration: 120s; opacity: 0.6; }
+        .stars3 { animation-duration: 180s; opacity: 0.3; }
+
+        @keyframes move-stars {
+          from { transform: translateY(0px); }
+          to { transform: translateY(-1000px); }
+        }
+
+        /* Solar System */
+        .solar-system {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 600px;
+          height: 600px;
+          transform: translate(-50%, -50%);
+        }
+
+        .orbit {
+          border: 1px solid rgba(255,255,255,0.2);
+          border-radius: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          animation: rotate 20s linear infinite;
+        }
+
+        .orbit1 { width: 80px; height: 80px; animation-duration: 6s; }
+        .orbit2 { width: 120px; height: 120px; animation-duration: 10s; }
+        .orbit3 { width: 160px; height: 160px; animation-duration: 14s; }
+        .orbit4 { width: 200px; height: 200px; animation-duration: 18s; }
+        .orbit5 { width: 250px; height: 250px; animation-duration: 22s; }
+        .orbit6 { width: 300px; height: 300px; animation-duration: 26s; }
+        .orbit7 { width: 360px; height: 360px; animation-duration: 30s; }
+        .orbit8 { width: 420px; height: 420px; animation-duration: 34s; }
+
+        .planet {
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: #00c6ff;
+          position: absolute;
+          top: -7px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        .planet2 { background: #ff9800; }
+        .planet3 { background: #4caf50; }
+        .planet4 { background: #9c27b0; }
+        .planet5 { background: #f44336; }
+        .planet6 { background: #03a9f4; }
+        .planet7 { background: #cddc39; }
+        .planet8 { background: #e91e63; }
+
+        @keyframes rotate {
+          0% { transform: translate(-50%, -50%) rotate(0deg); }
+          100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
         .about-container {
+          position: relative;
+          z-index: 2;
           max-width: 1200px;
           margin: 0 auto;
           text-align: left;
           font-family: 'Montserrat', sans-serif;
         }
+
         .about-title {
           font-size: 2.8rem;
           font-weight: 700;
@@ -105,10 +213,8 @@ const About = () => {
           line-height: 1.7;
           margin-bottom: 1.5rem;
         }
-        .highlight {
-          color: #00c6ff;
-          font-weight: 700;
-        }
+        .highlight { color: #00c6ff; font-weight: 700; }
+
         h3 {
           color: #00c6ff;
           margin-top: 2.5rem;
@@ -139,40 +245,6 @@ const About = () => {
           font-size: 1.3rem;
           line-height: 1;
           top: 2px;
-        }
-        @media (max-width: 768px) {
-          .about {
-            padding: 4rem 1.5rem 3rem 1.5rem;
-          }
-          .about-title {
-            font-size: 2.2rem;
-          }
-          .about-content p {
-            font-size: 1.1rem;
-          }
-          .about-list {
-            font-size: 1rem;
-          }
-          h3 {
-            font-size: 1.3rem;
-          }
-        }
-        @media (max-width: 480px) {
-          .about {
-            padding: 3rem 1rem 2rem 1rem;
-          }
-          .about-title {
-            font-size: 1.8rem;
-          }
-          .about-content p {
-            font-size: 1rem;
-          }
-          .about-list {
-            font-size: 0.95rem;
-          }
-          h3 {
-            font-size: 1.2rem;
-          }
         }
       `}</style>
     </section>
