@@ -170,7 +170,7 @@ const Banner = () => {
 
         <motion.div
           className="banner-image"
-          initial={{ scale: 0, rotate: -180, opacity: 0 }}
+          initial={{ scale: 0, rotate: -100, opacity: 0 }}
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 1.2, type: 'spring' }}
         >
@@ -253,7 +253,7 @@ const Banner = () => {
         .banner-btn { padding: 0.8rem 2.2rem; font-size: 1.1rem; font-weight: 600; color: #00c6ff; background: #fff; border-radius: 30px; text-decoration: none; }
         .resume-btn { padding: 0.8rem 1.6rem; font-size: 1rem; font-weight: 700; color: #fff; background: linear-gradient(90deg,#00c6ff 0%, #0072ff 100%); border: none; border-radius: 30px; cursor: pointer; }
 
-        .banner-image img { max-width: 400px; width: 100%; border-radius: 50%; border: 5px solid #00c6ff; box-shadow: 0 10px 25px rgba(0,198,255,0.3); }
+        .banner-image img { max-width: 400px; width: 100%; border-radius: 20%; border: 5px solid #00c6ff; box-shadow: 0 10px 25px rgba(0,198,255,0.3); }
       `}</style>
     </section>
   );
