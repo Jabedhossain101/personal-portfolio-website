@@ -1,17 +1,29 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaHome, FaUser, FaCode, FaTools, FaEnvelope, FaGraduationCap, FaArrowDown } from 'react-icons/fa';
+import {
+  FaHome,
+  FaUser,
+  FaCode,
+  FaTools,
+  FaEnvelope,
+  FaGraduationCap,
+  FaArrowDown,
+} from 'react-icons/fa';
+
+const RESUME_URL =
+  'https://drive.google.com/uc?export=download&id=1Q7bIqfgZn0-L44a7ZS4i7FaFMo_6OvFX'; // direct download link
 
 const Navbar = () => {
   const handleResumeClick = async e => {
     e.preventDefault();
-    const newTab = window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
 
     try {
       const res = await fetch(RESUME_URL, { cache: 'no-store' });
       if (!res.ok) throw new Error('Network response was not ok');
+
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
+
       const a = document.createElement('a');
       a.href = url;
       a.download = 'MD_Jabed_Hossain_Resume.pdf';
@@ -20,16 +32,11 @@ const Navbar = () => {
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      if (newTab) {
-        console.warn(
-          'Automatic download failed — resume opened in a new tab.',
-          err
-        );
-      } else {
-        window.location.href = RESUME_URL;
-      }
+      console.error('Resume download failed:', err);
+      window.open(RESUME_URL, '_blank', 'noopener,noreferrer'); // fallback
     }
   };
+
   return (
     <motion.nav
       className="navbar"
@@ -44,7 +51,7 @@ const Navbar = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          <span className='mr-12'>Jabed Hossain</span>
+          <span className="mr-12">Jabed Hossain</span>
         </motion.div>
 
         <input type="checkbox" id="menu-toggle" className="menu-toggle" />
@@ -153,36 +160,15 @@ const Navbar = () => {
           left: 0;
           bottom: -4px;
         }
-        .navbar-links li a:hover::after {
-          width: 100%;
-        }
-        .navbar-links li a:hover {
-          color: #00c6ff;
-        }
+        .navbar-links li a:hover::after { width: 100%; }
+        .navbar-links li a:hover { color: #00c6ff; }
 
-        .menu-icon {
-          display: none;
-          flex-direction: column;
-          cursor: pointer;
-          width: 30px;
-          height: 25px;
-          justify-content: space-between;
-        }
-        .menu-icon span {
-          display: block;
-          height: 4px;
-          background: #fff;
-          border-radius: 2px;
-          transition: 0.3s;
-        }
-        .menu-toggle {
-          display: none;
-        }
+        .menu-icon { display: none; flex-direction: column; cursor: pointer; width: 30px; height: 25px; justify-content: space-between; }
+        .menu-icon span { display: block; height: 4px; background: #fff; border-radius: 2px; transition: 0.3s; }
+        .menu-toggle { display: none; }
 
         @media (max-width: 768px) {
-          .navbar-container {
-            padding: 0 1rem;
-          }
+          .navbar-container { padding: 0 1rem; }
           .navbar-links {
             position: absolute;
             top: 60px;
@@ -195,12 +181,8 @@ const Navbar = () => {
             align-items: center;
             display: none;
           }
-          .menu-icon {
-            display: flex;
-          }
-          .menu-toggle:checked ~ .navbar-links {
-            display: flex;
-          }
+          .menu-icon { display: flex; }
+          .menu-toggle:checked ~ .navbar-links { display: flex; }
         }
       `}</style>
     </motion.nav>

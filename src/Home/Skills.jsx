@@ -59,7 +59,6 @@ const cardVariants = {
   visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 70 } },
 };
 
-// Floating animation loop
 const floatingAnimation = {
   animate: {
     y: [0, -10, 0],
@@ -68,25 +67,47 @@ const floatingAnimation = {
 };
 
 const Skills = () => {
-  const starsArray = Array.from({ length: 80 });
+  const starsArray = Array.from({ length: 250 }); // more stars
+  const blackHoles = Array.from({ length: 10 }); // 10 black holes
 
   return (
     <section className="skills" id="skills">
-      {/* Background stars */}
       <div className="skills-bg">
+        {/* Stars */}
         {starsArray.map((_, i) => (
           <span
             key={i}
-            className="star"
+            className={`star star${i % 3}`}
             style={{
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
-              width: `${Math.random() * 2 + 1}px`,
-              height: `${Math.random() * 2 + 1}px`,
               animationDelay: `${Math.random() * 5}s`,
             }}
-          ></span>
+          />
         ))}
+
+        {/* Planets */}
+        <div className="planet planet1"></div>
+        <div className="planet planet2"></div>
+        <div className="planet planet3"></div>
+
+        {/* Black Holes */}
+        {blackHoles.map((_, i) => (
+          <div
+            key={i}
+            className="blackhole"
+            style={{
+              top: `${Math.random() * 90 + 5}%`,
+              left: `${Math.random() * 90 + 5}%`,
+              width: `${50 + Math.random() * 50}px`,
+              height: `${50 + Math.random() * 50}px`,
+              animationDuration: `${8 + Math.random() * 7}s`,
+            }}
+          />
+        ))}
+
+        {/* Comet */}
+        <div className="comet"></div>
       </div>
 
       <div className="skills-container">
@@ -135,17 +156,38 @@ const Skills = () => {
       <style>{`
         .skills {
           position: relative;
-          background: #000;
+          background: #000; 
           color: #fff;
           padding: 4rem 1rem;
           display: flex;
           justify-content: center;
           overflow: hidden;
         }
+
+        /* Stars */
         .skills-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
         .star { position: absolute; background: #fff; border-radius: 50%; opacity: 0.3; animation: twinkle 2s infinite alternate; }
+        .star0 { width: 1px; height: 1px; }
+        .star1 { width: 2px; height: 2px; }
+        .star2 { width: 3px; height: 3px; }
         @keyframes twinkle { 0% { opacity: 0.1; } 50% { opacity: 1; } 100% { opacity: 0.1; } }
 
+        /* Planets */
+        .planet { position: absolute; border-radius: 50%; animation: rotatePlanet 60s linear infinite; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+        .planet1 { top: 25%; left: 15%; width: 60px; height: 60px; background: radial-gradient(circle, #6ab7ff, #2e86de); }
+        .planet2 { top: 65%; left: 70%; width: 70px; height: 70px; background: radial-gradient(circle, #f9e79f, #f4d03f); }
+        .planet3 { top: 35%; left: 50%; width: 50px; height: 50px; background: radial-gradient(circle, #7d3cff, #c39bd3); }
+        @keyframes rotatePlanet { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Black Holes */
+        .blackhole { position: absolute; border-radius: 50%; background: radial-gradient(circle, #000 0%, #111 70%, #222 100%); box-shadow: 0 0 60px rgba(0,0,0,0.8); animation: spinBlackhole linear infinite; }
+        @keyframes spinBlackhole { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Comet */
+        .comet { position: absolute; top: 10%; left: -50px; width: 4px; height: 20px; background: linear-gradient(45deg, #fff, #00c6ff); border-radius: 50%; box-shadow: 0 0 10px rgba(0,198,255,0.6); animation: flyComet 5s linear infinite; }
+        @keyframes flyComet { 0% { left: -50px; top: 10%; opacity: 0; } 50% { left: 110%; top: 40%; opacity: 1; } 100% { left: -50px; top: 10%; opacity: 0; } }
+
+        /* Content */
         .skills-container { position: relative; z-index: 2; max-width: 1200px; width: 100%; text-align: center; }
         .skills-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 3rem; color: #00c6ff; letter-spacing: 2px; }
         .category-section { margin-bottom: 3rem; }

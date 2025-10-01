@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [particles, setParticles] = useState([]);
+  const [shootingStars, setShootingStars] = useState([]);
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,8 +18,94 @@ const Contact = () => {
     setForm({ name: '', email: '', message: '' });
   };
 
+  // Fire cursor effect
+  useEffect(() => {
+    const createParticle = e => {
+      const x = e.clientX;
+      const y = e.clientY;
+      const newParticle = { x, y, id: Date.now() };
+      setParticles(prev => [...prev, newParticle]);
+      setTimeout(() => {
+        setParticles(prev => prev.filter(p => p.id !== newParticle.id));
+      }, 600);
+    };
+
+    window.addEventListener('mousemove', createParticle);
+    return () => window.removeEventListener('mousemove', createParticle);
+  }, []);
+
+  // Shooting stars effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const id = Date.now();
+      const top = Math.random() * 50; // % from top
+      const left = Math.random() * 80; // % from left
+      const length = Math.random() * 100 + 50; // px
+      const duration = Math.random() * 1 + 1; // seconds
+
+      setShootingStars(prev => [...prev, { id, top, left, length, duration }]);
+      setTimeout(() => {
+        setShootingStars(prev => prev.filter(star => star.id !== id));
+      }, duration * 1000);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="contact" id="contact">
+      {/* Fire cursor particles */}
+      {particles.map(p => (
+        <span
+          key={p.id}
+          className="fire-particle"
+          style={{ left: p.x, top: p.y }}
+        />
+      ))}
+
+      {/* Space stars background */}
+      <div className="stars"></div>
+      <div className="stars stars2"></div>
+      <div className="stars stars3"></div>
+
+      {/* Shooting stars */}
+      {shootingStars.map(star => (
+        <div
+          key={star.id}
+          className="shooting-star"
+          style={{
+            top: `${star.top}%`,
+            left: `${star.left}%`,
+            width: `${star.length}px`,
+            animationDuration: `${star.duration}s`,
+          }}
+        />
+      ))}
+
+      {/* Astronomical Instruments */}
+      <motion.img
+        src="https://pngimg.com/uploads/telescope/telescope_PNG30.png"
+        alt="Telescope"
+        className="astro telescope"
+        animate={{ y: [0, -15, 0] }}
+        transition={{ repeat: Infinity, duration: 5 }}
+      />
+      <motion.img
+        src="https://pngimg.com/uploads/satellite/satellite_PNG40.png"
+        alt="Satellite"
+        className="astro satellite"
+        animate={{ rotate: [0, 360] }}
+        transition={{ repeat: Infinity, duration: 20, ease: 'linear' }}
+      />
+      {/* <motion.img
+        src="https://pngimg.com/uploads/antenna_dish/antenna_dish_PNG9.png"
+        alt="Dish Antenna"
+        className="astro dish"
+        animate={{ y: [0, 20, 0] }}
+        transition={{ repeat: Infinity, duration: 6 }}
+      /> */}
+
+      {/* Main content */}
       <div className="contact-container">
         <motion.h2
           initial={{ x: -40, opacity: 0 }}
@@ -46,16 +134,18 @@ const Contact = () => {
         >
           <p>
             <strong>Email:</strong>{' '}
-            <a href="mailto:example@email.com">ahmedrafsan101@gmail.com</a>
+            <a href="mailto:ahmedrafsan101@gmail.com">
+              ahmedrafsan101@gmail.com
+            </a>
           </p>
           <p>
             <strong>Phone:</strong>{' '}
-            <a href="tel:+880123456789">+880-1887686535</a>
+            <a href="tel:+8801887686535">+880-1887686535</a>
           </p>
           <p>
             <strong>WhatsApp:</strong>{' '}
             <a
-              href="https://wa.me/880123456789"
+              href="https://wa.me/8801887686535"
               target="_blank"
               rel="noreferrer"
             >
@@ -124,20 +214,23 @@ const Contact = () => {
         </motion.form>
       </div>
 
-      {/* Styles */}
       <style>{`
         .contact {
-          background: linear-gradient(120deg, #232526 0%, #2c5364 100%);
+          position: relative;
+          background: #000;
           color: #fff;
           padding: 4rem 1rem 3rem 1rem;
           display: flex;
           justify-content: center;
+          min-height: 100vh;
+          overflow: hidden;
         }
         .contact-container {
           max-width: 500px;
           margin: 0 auto;
           width: 100%;
           text-align: center;
+          z-index: 10;
         }
         .contact-title {
           font-size: 2.2rem;
@@ -159,9 +252,6 @@ const Contact = () => {
           margin-bottom: 2rem;
           font-size: 1rem;
           text-align: left;
-        }
-        .contact-info p {
-          margin: 0.5rem 0;
         }
         .contact-info a {
           color: #00c6ff;
@@ -199,27 +289,65 @@ const Contact = () => {
           border: none;
           cursor: pointer;
           box-shadow: 0 2px 8px rgba(44,83,100,0.10);
-          transition: background 0.2s, color 0.2s, transform 0.2s;
-        }
-        .contact-btn:hover {
-          background: #00c6ff;
-          color: #fff;
         }
         .contact-success {
           margin-top: 1rem;
           color: #00c6ff;
           font-weight: 600;
         }
-        @media (max-width: 600px) {
-          .contact-title {
-            font-size: 1.5rem;
-          }
-          .contact-desc {
-            font-size: 1rem;
-          }
-          .contact-info {
-            font-size: 0.95rem;
-          }
+
+        /* Astronomical elements */
+        .astro {
+          position: absolute;
+          z-index: 1;
+          opacity: 0.8;
+        }
+        .telescope { bottom: 20px; left: 10%; width: 200px; }
+        .satellite { top: 10%; right: 15%; width: 150px; }
+        .dish { bottom: 10%; right: 5%; width: 180px; }
+
+        /* Fire cursor effect */
+        .fire-particle {
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #ff6600, transparent);
+          pointer-events: none;
+          animation: fire 0.6s forwards;
+        }
+        @keyframes fire {
+          from { transform: scale(1); opacity: 1; }
+          to { transform: scale(0.2) translateY(-20px); opacity: 0; }
+        }
+
+        /* Star Background Animation */
+        .stars, .stars2, .stars3 {
+          position: absolute;
+          top: 0; left: 0;
+          width: 200%; height: 200%;
+          background: transparent url('https://www.script-tutorials.com/demos/360/images/stars.png') repeat;
+          animation: moveStars 100s linear infinite;
+          z-index: 0;
+        }
+        .stars2 { background-size: contain; animation: moveStars 150s linear infinite; opacity: 0.6; }
+        .stars3 { background-size: cover; animation: moveStars 200s linear infinite; opacity: 0.4; }
+        @keyframes moveStars { from { transform: translateY(0); } to { transform: translateY(-1000px); } }
+
+        /* Shooting stars */
+        .shooting-star {
+          position: absolute;
+          height: 2px;
+          background: linear-gradient(90deg, #fff, rgba(255,255,255,0));
+          transform: rotate(45deg);
+          pointer-events: none;
+          z-index: 2;
+          animation-name: shooting;
+          animation-timing-function: linear;
+        }
+        @keyframes shooting {
+          from { transform: translate(0,0) rotate(45deg); opacity: 1; }
+          to { transform: translate(500px, 500px) rotate(45deg); opacity: 0; }
         }
       `}</style>
     </section>

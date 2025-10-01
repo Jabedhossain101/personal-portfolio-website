@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router';
 import { FaGithub } from 'react-icons/fa';
 import { RiLiveLine } from 'react-icons/ri';
@@ -8,11 +8,54 @@ const ProjectDetails = () => {
   const { id } = useParams();
   const project = projects.find(p => p.id === parseInt(id));
 
-  if (!project) return <p className="text-center mt-10">Project not found.</p>;
+  const [shootingStars, setShootingStars] = useState([]);
+
+  // Shooting stars effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const starId = Date.now();
+      const top = Math.random() * 50; // % from top
+      const left = Math.random() * 80; // % from left
+      const length = Math.random() * 100 + 50; // px
+      const duration = Math.random() * 1 + 1; // seconds
+
+      setShootingStars(prev => [
+        ...prev,
+        { id: starId, top, left, length, duration },
+      ]);
+      setTimeout(() => {
+        setShootingStars(prev => prev.filter(star => star.id !== starId));
+      }, duration * 1000);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  if (!project)
+    return <p className="text-center mt-10 text-white">Project not found.</p>;
 
   return (
-    <section className="bg-gray-900 text-white py-10 px-4">
-      <div className="max-w-5xl mx-auto">
+    <section className="project-details relative text-white min-h-screen py-10 px-4 overflow-hidden">
+      {/* Space stars background */}
+      <div className="stars"></div>
+      <div className="stars stars2"></div>
+      <div className="stars stars3"></div>
+
+      {/* Shooting stars */}
+      {shootingStars.map(star => (
+        <div
+          key={star.id}
+          className="shooting-star"
+          style={{
+            top: `${star.top}%`,
+            left: `${star.left}%`,
+            width: `${star.length}px`,
+            animationDuration: `${star.duration}s`,
+          }}
+        />
+      ))}
+
+      <div className="max-w-5xl mx-auto relative z-10">
         <img
           src={project.img}
           alt={project.title}
@@ -81,6 +124,37 @@ const ProjectDetails = () => {
           </Link>
         </div>
       </div>
+
+      <style>{`
+        /* Star Background Animation */
+        .stars, .stars2, .stars3 {
+          position: absolute;
+          top: 0; left: 0;
+          width: 200%; height: 200%;
+          background: transparent url('https://www.script-tutorials.com/demos/360/images/stars.png') repeat;
+          animation: moveStars 100s linear infinite;
+          z-index: 0;
+        }
+        .stars2 { background-size: contain; animation: moveStars 150s linear infinite; opacity: 0.6; }
+        .stars3 { background-size: cover; animation: moveStars 200s linear infinite; opacity: 0.4; }
+        @keyframes moveStars { from { transform: translateY(0); } to { transform: translateY(-1000px); } }
+
+        /* Shooting stars */
+        .shooting-star {
+          position: absolute;
+          height: 2px;
+          background: linear-gradient(90deg, #fff, rgba(255,255,255,0));
+          transform: rotate(45deg);
+          pointer-events: none;
+          z-index: 2;
+          animation-name: shooting;
+          animation-timing-function: linear;
+        }
+        @keyframes shooting {
+          from { transform: translate(0,0) rotate(45deg); opacity: 1; }
+          to { transform: translate(500px, 500px) rotate(45deg); opacity: 0; }
+        }
+      `}</style>
     </section>
   );
 };
