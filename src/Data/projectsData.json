@@ -1,6 +1,24 @@
 [
-  {
+    {
     "id": 1,
+    "title": "CareerOstad – AI-Powered Job Matching & Career Guidance Portal",
+    "desc": "CareerOstad is an AI-powered job matching and career guidance platform designed to bridge the gap between job seekers and employers. The system intelligently matches candidates with suitable job opportunities using an AI-based algorithm while providing personalized career advice and mock interview simulations. It includes separate dashboards for admins, candidates, and companies, ensuring a tailored and efficient user experience.",
+    "tech": [
+      "Next.js",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "TailwindCSS",
+      "Stripe API"
+    ],
+    "img": "https://i.ibb.co.com/SXZSTY9s/image.png",
+    "link": "https://career-ostad.vercel.app/",
+    "gitLink": "https://github.com/Foysal-Munsy/CareerOstad-AI-Job-Matching",
+    "challenges": "Developing an efficient AI-based job matching algorithm and integrating Stripe payment gateway for premium features were major challenges. Ensuring real-time synchronization between dashboards also required complex backend logic.",
+    "futurePlans": "Integrate advanced AI analytics for career insights, enhance admin reporting tools, and introduce real-time chat between candidates and employers."
+  },
+  {
+    "id": 2,
     "title": "Medical Service Review System",
     "desc": "A modern web application enabling users to review and rate medical services to promote transparency and assist patients in making informed decisions. Built with React for the frontend and Node.js with Express for the backend, the system uses MongoDB for data storage and Firebase for authentication. The app features user registration with JWT-based authentication, dynamic review submission, and a responsive interface styled with TailwindCSS.",
     "tech": [
@@ -19,7 +37,7 @@
     "futurePlans": "Enhance the platform with improved SEO, add a contact form with email notifications, and incorporate advanced filtering for medical service reviews."
   },
   {
-    "id": 2,
+    "id": 3,
     "title": "Plant Care App",
     "desc": "A comprehensive MERN stack application that helps users manage and track the care of their plants. It offers features such as watering reminders, health logging, and user authentication via Firebase. The backend is built with Node.js and Express, storing data in MongoDB. The frontend, built with React and styled using TailwindCSS, ensures an intuitive and responsive user experience.",
     "tech": [
@@ -38,7 +56,7 @@
     "futurePlans": "Plan to add AI-assisted plant health diagnostics, expand reminder functionalities, and improve user engagement features."
   },
   {
-    "id": 3,
+    "id": 4,
     "title": "Metrimony App",
     "desc": "A responsive matrimony platform facilitating user registration, biodata management, and premium membership functionalities. The application uses React for the frontend and Node.js with Express for backend services, along with MongoDB for database management. User authentication is handled through Firebase and JWT. The design is crafted with TailwindCSS to ensure responsiveness and modern aesthetics.",
     "tech": [
@@ -56,4 +74,5 @@
     "challenges": "Implementing a secure premium membership system and handling complex user data workflows required detailed backend logic. Maintaining smooth user experiences while ensuring data privacy was also a key concern.",
     "futurePlans": "Future updates include AI-based matchmaking, enhanced chat features, and expanded premium services."
   }
+
 ]

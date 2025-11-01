@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import {
   FaCss3Alt,
   FaGitAlt,
@@ -20,6 +20,7 @@ import { TbBrandCpp, TbBrandJavascript } from 'react-icons/tb';
 import { LuFigma } from 'react-icons/lu';
 import { VscVscode } from 'react-icons/vsc';
 
+/* ------------------------ Skill Data ------------------------ */
 const categories = {
   Frontend: [
     { name: 'React', color: '#61dafb', icon: <FaReact /> },
@@ -28,7 +29,7 @@ const categories = {
     { name: 'CSS3', color: '#2965f1', icon: <FaCss3Alt /> },
     { name: 'Redux', color: '#764abc', icon: <SiRedux /> },
     { name: 'Figma', color: '#a259ff', icon: <LuFigma /> },
-    { name: 'Tailwind css', color: '#38bdf8', icon: <RiTailwindCssFill /> },
+    { name: 'Tailwind CSS', color: '#38bdf8', icon: <RiTailwindCssFill /> },
   ],
   Backend: [
     { name: 'Node.js', color: '#68a063', icon: <RiNodejsLine /> },
@@ -42,111 +43,199 @@ const categories = {
     { name: 'GitHub', color: '#181717', icon: <FaGithub /> },
     { name: 'VS Code', color: '#007acc', icon: <VscVscode /> },
   ],
-  Programming_Language: [
+  'Programming Language': [
     { name: 'Java', color: '#5382a1', icon: <FaJava /> },
     { name: 'C++', color: '#00599c', icon: <TbBrandCpp /> },
   ],
 };
 
-// Animation Variants
+/* ------------------------ Framer Variants ------------------------ */
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.15 } },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 70 } },
-};
-
-const floatingAnimation = {
-  animate: {
-    y: [0, -10, 0],
-    transition: { yoyo: Infinity, duration: 4, ease: 'easeInOut' },
+  visible: {
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.1,
+    },
   },
 };
 
-const Skills = () => {
-  const starsArray = Array.from({ length: 250 }); // more stars
-  const blackHoles = Array.from({ length: 10 }); // 10 black holes
+const cardVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: 'spring', stiffness: 120, damping: 12 },
+  },
+};
+
+/* ------------------------ 3D Tilt Card ------------------------ */
+const TiltCard = ({ skill }) => {
+  const ref = useRef(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const xSpring = useSpring(x, { stiffness: 300, damping: 20 });
+  const ySpring = useSpring(y, { stiffness: 300, damping: 20 });
+
+  const rotateX = useTransform(ySpring, [-0.5, 0.5], ['10deg', '-10deg']);
+  const rotateY = useTransform(xSpring, [-0.5, 0.5], ['-10deg', '10deg']);
+
+  const handleMove = e => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const normalizedX = (mouseX / rect.width - 0.5) * 1.2;
+    const normalizedY = (mouseY / rect.height - 0.5) * 1.2;
+    x.set(normalizedX);
+    y.set(normalizedY);
+  };
+
+  const handleLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
-    <section className="skills" id="skills">
-      <div className="skills-bg">
-        {/* Stars */}
-        {starsArray.map((_, i) => (
-          <span
-            key={i}
-            className={`star star${i % 3}`}
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-            }}
-          />
-        ))}
+    <motion.div
+      ref={ref}
+      className="skill-card-premium"
+      variants={cardVariants}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: 'preserve-3d',
+      }}
+      whileHover={{
+        scale: 1.08,
+        boxShadow: `0 10px 35px -5px ${skill.color}60`,
+      }}
+      transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+    >
+      <div className="card-glow" style={{ background: skill.color }}></div>
+      <span className="skill-icon-premium" style={{ color: skill.color }}>
+        {skill.icon}
+      </span>
+      <span className="skill-name-premium">{skill.name}</span>
+    </motion.div>
+  );
+};
 
-        {/* Planets */}
-        <div className="planet planet1"></div>
-        <div className="planet planet2"></div>
-        <div className="planet planet3"></div>
+/* ------------------------ Main Component ------------------------ */
+const Skills = () => {
+  const canvasRef = useRef(null);
 
-        {/* Black Holes */}
-        {blackHoles.map((_, i) => (
-          <div
-            key={i}
-            className="blackhole"
-            style={{
-              top: `${Math.random() * 90 + 5}%`,
-              left: `${Math.random() * 90 + 5}%`,
-              width: `${50 + Math.random() * 50}px`,
-              height: `${50 + Math.random() * 50}px`,
-              animationDuration: `${8 + Math.random() * 7}s`,
-            }}
-          />
-        ))}
+  // Milky Way Background
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-        {/* Comet */}
-        <div className="comet"></div>
-      </div>
+    let stars = [];
+    const numStars = 300;
 
-      <div className="skills-container">
+    class Star {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.z = Math.random() * canvas.width;
+        this.size = Math.random() * 1.2 + 0.5;
+      }
+      update() {
+        this.z -= 2;
+        if (this.z <= 0) this.reset();
+      }
+      draw() {
+        const fx =
+          (this.x - canvas.width / 2) * (canvas.width / this.z) +
+          canvas.width / 2;
+        const fy =
+          (this.y - canvas.height / 2) * (canvas.width / this.z) +
+          canvas.height / 2;
+        const r = (canvas.width / this.z) * this.size;
+        ctx.beginPath();
+        ctx.fillStyle = 'white';
+        ctx.arc(fx, fy, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < numStars; i++) stars.push(new Star());
+
+    const animate = () => {
+      ctx.fillStyle = '#000010';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        star.update();
+        star.draw();
+      });
+      requestAnimationFrame(animate);
+    };
+    animate();
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return (
+    <section className="skills-premium-space" id="skills">
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      />
+
+      <div className="skills-container-premium">
         <motion.h2
-          initial={{ x: -40, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.7, type: 'spring' }}
-          className="skills-title"
+          initial={{ y: -30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="skills-title-premium"
         >
-          My Skills
+          My <strong>Tech Universe</strong> 🚀
         </motion.h2>
 
-        {Object.entries(categories).map(([categoryName, skills]) => (
-          <div key={categoryName} className="category-section">
-            <h3 className="category-title">{categoryName}</h3>
+        <p className="skills-subtitle-premium">
+          Navigating the full stack to build stellar web applications.
+        </p>
+
+        {Object.entries(categories).map(([title, skills]) => (
+          <div key={title} className="category-section-premium">
+            <motion.h3
+              initial={{ x: -20, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="category-title-premium"
+            >
+              {title}
+            </motion.h3>
             <motion.div
-              className="skills-grid"
+              className="skills-grid-premium"
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.1 }}
             >
               {skills.map(skill => (
-                <motion.div
-                  key={skill.name}
-                  className="skill-card"
-                  variants={cardVariants}
-                  whileHover={{
-                    scale: 1.1,
-                    boxShadow: '0 15px 35px rgba(0,198,255,0.5)',
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  {...floatingAnimation}
-                >
-                  <span className="skill-icon" style={{ color: skill.color }}>
-                    {skill.icon}
-                  </span>
-                  <span className="skill-name">{skill.name}</span>
-                </motion.div>
+                <TiltCard key={skill.name} skill={skill} />
               ))}
             </motion.div>
           </div>
@@ -154,51 +243,103 @@ const Skills = () => {
       </div>
 
       <style>{`
-        .skills {
+        .skills-premium-space {
           position: relative;
-          background: #000; 
+          background: #000;
           color: #fff;
-          padding: 4rem 1rem;
+          padding: 6rem 1rem;
           display: flex;
           justify-content: center;
           overflow: hidden;
+          min-height: 100vh;
         }
 
-        /* Stars */
-        .skills-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-        .star { position: absolute; background: #fff; border-radius: 50%; opacity: 0.3; animation: twinkle 2s infinite alternate; }
-        .star0 { width: 1px; height: 1px; }
-        .star1 { width: 2px; height: 2px; }
-        .star2 { width: 3px; height: 3px; }
-        @keyframes twinkle { 0% { opacity: 0.1; } 50% { opacity: 1; } 100% { opacity: 0.1; } }
+        .skills-container-premium {
+          position: relative;
+          z-index: 2;
+          max-width: 1200px;
+          width: 100%;
+          text-align: center;
+          backdrop-filter: blur(1px);
+          background: rgba(0, 0, 0, 0.15);
+          border-radius: 15px;
+          padding: 2rem;
+        }
 
-        /* Planets */
-        .planet { position: absolute; border-radius: 50%; animation: rotatePlanet 60s linear infinite; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
-        .planet1 { top: 25%; left: 15%; width: 60px; height: 60px; background: radial-gradient(circle, #6ab7ff, #2e86de); }
-        .planet2 { top: 65%; left: 70%; width: 70px; height: 70px; background: radial-gradient(circle, #f9e79f, #f4d03f); }
-        .planet3 { top: 35%; left: 50%; width: 50px; height: 50px; background: radial-gradient(circle, #7d3cff, #c39bd3); }
-        @keyframes rotatePlanet { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .skills-title-premium {
+          font-size: 3rem;
+          font-weight: 800;
+          color: #00c6ff;
+          text-shadow: 0 0 10px rgba(0,198,255,0.7);
+        }
+        .skills-subtitle-premium {
+          font-size: 1.2rem;
+          color: #b3e6ff;
+          margin-bottom: 4rem;
+        }
+        .category-section-premium { margin-bottom: 4rem; text-align: left; }
+        .category-title-premium {
+          font-size: 1.7rem;
+          font-weight: 600;
+          margin-bottom: 2rem;
+          padding-bottom: 0.5rem;
+          color: #58d7ff;
+          border-bottom: 2px solid rgba(0,198,255,0.3);
+        }
+        .skills-grid-premium {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+          gap: 1.5rem;
+        }
 
-        /* Black Holes */
-        .blackhole { position: absolute; border-radius: 50%; background: radial-gradient(circle, #000 0%, #111 70%, #222 100%); box-shadow: 0 0 60px rgba(0,0,0,0.8); animation: spinBlackhole linear infinite; }
-        @keyframes spinBlackhole { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .skill-card-premium {
+          background: rgba(30, 40, 50, 0.5);
+          border: 1px solid rgba(0,198,255,0.2);
+          border-radius: 15px;
+          padding: 1rem;
+          height: 150px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          cursor: default;
+          position: relative;
+          overflow: hidden;
+          will-change: transform;
+        }
+        .card-glow {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          z-index: 0;
+          filter: blur(20px);
+          transition: opacity 0.3s;
+        }
+        .skill-card-premium:hover .card-glow { opacity: 0.3; }
 
-        /* Comet */
-        .comet { position: absolute; top: 10%; left: -50px; width: 4px; height: 20px; background: linear-gradient(45deg, #fff, #00c6ff); border-radius: 50%; box-shadow: 0 0 10px rgba(0,198,255,0.6); animation: flyComet 5s linear infinite; }
-        @keyframes flyComet { 0% { left: -50px; top: 10%; opacity: 0; } 50% { left: 110%; top: 40%; opacity: 1; } 100% { left: -50px; top: 10%; opacity: 0; } }
+        .skill-icon-premium {
+          font-size: 3.5rem;
+          margin-bottom: 0.75rem;
+          position: relative;
+          z-index: 1;
+          filter: drop-shadow(0 0 10px rgba(0,198,255,0.5));
+        }
+        .skill-name-premium {
+          font-size: 1rem;
+          color: #c9d1d9;
+          position: relative;
+          z-index: 1;
+        }
 
-        /* Content */
-        .skills-container { position: relative; z-index: 2; max-width: 1200px; width: 100%; text-align: center; }
-        .skills-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 3rem; color: #00c6ff; letter-spacing: 2px; }
-        .category-section { margin-bottom: 3rem; }
-        .category-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 1.8rem; text-align: left; border-left: 4px solid #00c6ff; padding-left: 12px; color: #58d7ff; }
-        .skills-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2rem; justify-items: center; }
-        .skill-card { background: #222a36; border-radius: 20px; box-shadow: 0 6px 20px rgba(0,198,255,0.15); width: 140px; height: 160px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; user-select: none; }
-        .skill-icon { font-size: 4.5rem; margin-bottom: 1rem; filter: drop-shadow(0 0 5px rgba(0,198,255,0.8)); }
-        .skill-name { font-size: 1.15rem; font-weight: 600; color: #e0e0e0; }
-
-        @media (max-width: 900px) { .skills-grid { grid-template-columns: repeat(3, 1fr); } .category-title { text-align: center; } }
-        @media (max-width: 600px) { .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; } .skill-card { width: 120px; height: 140px; } .skill-icon { font-size: 3.8rem; } .category-title { font-size: 1.3rem; } }
+        @media (max-width: 768px) {
+          .skills-title-premium { font-size: 2.4rem; }
+          .skills-grid-premium { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+        }
+        @media (max-width: 480px) {
+          .skills-title-premium { font-size: 2rem; }
+          .skills-grid-premium { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+          .skill-card-premium { height: 120px; }
+        }
       `}</style>
     </section>
   );

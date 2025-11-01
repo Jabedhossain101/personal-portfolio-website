@@ -22,7 +22,7 @@ const RootLayout = () => {
       <Projects></Projects>
       
       <Contact></Contact>
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </div>
   );
 };

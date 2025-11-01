@@ -1,16 +1,73 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const About = () => {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const starsArray = Array.from({ length: 120 });
+  const canvasRef = useRef(null);
 
+  // Cursor Tracking
   useEffect(() => {
     const moveCursor = e => {
       setCursorPos({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener('mousemove', moveCursor);
     return () => window.removeEventListener('mousemove', moveCursor);
+  }, []);
+
+  // Animated Milky Way Background
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let stars = [];
+    const numStars = 300;
+
+    class Star {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.z = Math.random() * canvas.width;
+        this.size = Math.random() * 1.2 + 0.5;
+      }
+      update() {
+        this.z -= 2;
+        if (this.z <= 0) this.reset();
+      }
+      draw() {
+        const fx = (this.x - canvas.width / 2) * (canvas.width / this.z) + canvas.width / 2;
+        const fy = (this.y - canvas.height / 2) * (canvas.width / this.z) + canvas.height / 2;
+        const r = (canvas.width / this.z) * this.size;
+        ctx.beginPath();
+        ctx.fillStyle = 'white';
+        ctx.arc(fx, fy, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < numStars; i++) stars.push(new Star());
+
+    const animate = () => {
+      ctx.fillStyle = '#000010'; // deep space background
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        star.update();
+        star.draw();
+      });
+      requestAnimationFrame(animate);
+    };
+    animate();
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
@@ -21,31 +78,16 @@ const About = () => {
         style={{ left: cursorPos.x, top: cursorPos.y }}
       />
 
-      {/* Starry Background */}
-      <div className="about-bg">
-        {starsArray.map((_, i) => (
-          <span
-            key={i}
-            className="star"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              width: `${Math.random() * 2 + 1}px`,
-              height: `${Math.random() * 2 + 1}px`,
-              animationDelay: `${Math.random() * 5}s`,
-            }}
-          ></span>
-        ))}
-      </div>
-
-      {/* Solar System */}
-      <div className="solar-system">
-        {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
-          <div key={i} className={`orbit orbit${i}`}>
-            <div className={`planet planet${i}`}></div>
-          </div>
-        ))}
-      </div>
+      {/* Milky Way Canvas Background */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      />
 
       <div className="about-container">
         <motion.h2
@@ -143,49 +185,6 @@ const About = () => {
           transition: all 0.15s ease-out;
           z-index: 9999;
         }
-
-        /* Stars (twinkling like Banner) */
-        .about-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-        .star {
-          position: absolute;
-          background: #fff;
-          border-radius: 50%;
-          opacity: 0.3;
-          animation: twinkle 2s infinite alternate;
-        }
-        @keyframes twinkle { 0% { opacity: 0.1; } 50% { opacity: 1; } 100% { opacity: 0.1; } }
-
-        /* Solar System */
-        .solar-system {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 600px;
-          height: 600px;
-          transform: translate(-50%, -50%);
-          z-index: 1;
-        }
-        .orbit { border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: rotate 20s linear infinite; }
-        .orbit1 { width: 80px; height: 80px; animation-duration: 6s; }
-        .orbit2 { width: 120px; height: 120px; animation-duration: 10s; }
-        .orbit3 { width: 160px; height: 160px; animation-duration: 14s; }
-        .orbit4 { width: 200px; height: 200px; animation-duration: 18s; }
-        .orbit5 { width: 250px; height: 250px; animation-duration: 22s; }
-        .orbit6 { width: 300px; height: 300px; animation-duration: 26s; }
-        .orbit7 { width: 360px; height: 360px; animation-duration: 30s; }
-        .orbit8 { width: 420px; height: 420px; animation-duration: 34s; }
-
-        .planet { width: 14px; height: 14px; border-radius: 50%; position: absolute; top: -7px; left: 50%; transform: translateX(-50%); }
-        .planet1 { background: #00c6ff; }
-        .planet2 { background: #ff9800; }
-        .planet3 { background: #4caf50; }
-        .planet4 { background: #9c27b0; }
-        .planet5 { background: #f44336; }
-        .planet6 { background: #03a9f4; }
-        .planet7 { background: #cddc39; }
-        .planet8 { background: #e91e63; }
-
-        @keyframes rotate { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
 
         .about-container { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; text-align: left; font-family: 'Montserrat', sans-serif; }
         .about-title { font-size: 2.8rem; font-weight: 700; margin-bottom: 2rem; letter-spacing: 2px; color: #00c6ff; text-align: center; }

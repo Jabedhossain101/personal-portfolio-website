@@ -1,11 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaFacebook, FaArrowDown } from 'react-icons/fa';
 
 const RESUME_URL =
-  'https://drive.google.com/file/d/1Q7bIqfgZn0-L44a7ZS4i7FaFMo_6OvFX/view';
+  'https://drive.google.com/file/d/1E01sAL5TFBq9RRwMgKkd2ObisZkybU0V/view';
 
 const Banner = () => {
+  // Typing animation
+  const [text, setText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [loopNum, setLoopNum] = useState(0);
+  const [speed, setSpeed] = useState(150);
+
+  const roles = [
+    'MERN Stack Developer',
+    'Frontend Specialist',
+    'Creative Web Engineer',
+  ];
+
+  useEffect(() => {
+    const handleTyping = () => {
+      const current = roles[loopNum % roles.length];
+      const updatedText = isDeleting
+        ? current.substring(0, text.length - 1)
+        : current.substring(0, text.length + 1);
+      setText(updatedText);
+
+      if (!isDeleting && updatedText === current) {
+        setTimeout(() => setIsDeleting(true), 1000);
+        setSpeed(100);
+      } else if (isDeleting && updatedText === '') {
+        setIsDeleting(false);
+        setLoopNum(loopNum + 1);
+        setSpeed(150);
+      }
+    };
+
+    const timer = setTimeout(handleTyping, speed);
+    return () => clearTimeout(timer);
+  }, [text, isDeleting]);
+
   const handleResumeClick = async e => {
     e.preventDefault();
     const newTab = window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
@@ -24,236 +58,224 @@ const Banner = () => {
       window.URL.revokeObjectURL(url);
     } catch (err) {
       if (newTab)
-        console.warn(
-          'Automatic download failed — resume opened in a new tab.',
-          err
-        );
+        console.warn('Automatic download failed — opened in new tab.', err);
       else window.location.href = RESUME_URL;
     }
   };
 
-  const starsArray = Array.from({ length: 120 });
+  const planets = [
+    { name: 'Mercury', size: 6, color: '#b1b1b1', orbit: 70, duration: 8 },
+    { name: 'Venus', size: 10, color: '#e5c27a', orbit: 100, duration: 12 },
+    { name: 'Earth', size: 12, color: '#3fa7d6', orbit: 130, duration: 16 },
+    { name: 'Mars', size: 9, color: '#c1440e', orbit: 160, duration: 20 },
+    { name: 'Jupiter', size: 25, color: '#d6b67a', orbit: 210, duration: 30 },
+    { name: 'Saturn', size: 20, color: '#f7e8a4', orbit: 260, duration: 36 },
+    { name: 'Uranus', size: 16, color: '#82eefd', orbit: 310, duration: 42 },
+    { name: 'Neptune', size: 15, color: '#4169e1', orbit: 360, duration: 50 },
+  ];
+
+  // Fixed stars positions
+  const starsArray = useMemo(() => {
+    return Array.from({ length: 50 }).map(() => ({
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      size: Math.random() * 2 + 1,
+      delay: Math.random() * 5,
+    }));
+  }, []);
 
   return (
-    <section className="banner" id="home">
-      <div className="banner-bg">
-        {starsArray.map((_, i) => (
+    <section
+      className="min-h-[90vh] flex items-center justify-center bg-black text-white py-12 px-4 relative overflow-hidden"
+      id="home"
+    >
+      {/* Stars Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {starsArray.map((star, i) => (
           <span
             key={i}
-            className="star"
+            className="absolute bg-white rounded-full"
             style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              width: `${Math.random() * 2 + 1}px`,
-              height: `${Math.random() * 2 + 1}px`,
-              animationDelay: `${Math.random() * 5}s`,
+              top: `${star.top}%`,
+              left: `${star.left}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              opacity: 0.3,
+              animation: `twinkle 3s infinite alternate`,
+              animationDelay: `${star.delay}s`,
             }}
           ></span>
         ))}
-
-        {/* Sun */}
-        <div className="sun"></div>
-
-        {/* Orbits */}
-        {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
-          <div key={i} className={`orbit orbit${i}`}>
-            <div className={`planet planet${i}`}></div>
-          </div>
-        ))}
-
-        {/* Alien spaceship */}
-        <div className="alien-spaceship">
-          <img
-            src="https://i.ibb.co.com/hF1qjXC5/istockphoto-1473516483-612x612-removebg-preview.png"
-            alt="Alien Spaceship"
-          />
-        </div>
       </div>
 
-      <div className="banner-wrapper">
-        <div className="banner-content">
-          <motion.h1
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, type: 'spring' }}
-            className="banner-title"
+      {/* Solar System */}
+      <div className="absolute inset-0 flex items-center justify-center z-0">
+        <div className="relative w-[80px] h-[80px] rounded-full bg-gradient-to-br from-yellow-300 via-orange-500 to-red-600 shadow-[0_0_80px_40px_rgba(255,165,0,0.5)]"></div>
+        {planets.map((planet, index) => (
+          <div
+            key={index}
+            className="absolute top-1/2 left-1/2 border border-dashed border-white/20 rounded-full"
+            style={{
+              width: `${planet.orbit * 2}px`,
+              height: `${planet.orbit * 2}px`,
+              marginLeft: `-${planet.orbit}px`,
+              marginTop: `-${planet.orbit}px`,
+              animation: `rotatePlanet ${planet.duration}s linear infinite`,
+            }}
           >
-            Hi, I'm <span className="highlight">MD Jabed Hossain</span>
-          </motion.h1>
-          <motion.h2
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8, type: 'spring' }}
-            className="banner-subtitle"
-          >
-            MERN Stack Developer & Web Enthusiast
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 1 }}
-            className="banner-desc"
-          >
-            I build modern, responsive web applications with beautiful UI and
-            smooth user experience.
-          </motion.p>
+            <div
+              className="absolute rounded-full"
+              style={{
+                top: '50%',
+                left: '100%',
+                width: `${planet.size}px`,
+                height: `${planet.size}px`,
+                backgroundColor: planet.color,
+                boxShadow: `0 0 20px ${planet.color}`,
+                transform: 'translate(-50%, -50%)',
+              }}
+            ></div>
+          </div>
+        ))}
+      </div>
 
-          <motion.div
-            className="social-links"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-          >
+      {/* Main Content */}
+      <motion.div
+        className="flex flex-col lg:flex-row items-center justify-between max-w-6xl w-full gap-8 relative z-10"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 2, ease: 'easeInOut' }}
+      >
+        {/* Text Section */}
+        <div className="lg:w-1/2 text-center lg:text-left">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4">
+            Hi, I'm{' '}
+            <span className="highlight name-animation">
+              {'MD Jabed Hossain'.split('').map((letter, i) => (
+                <span key={i} className="wave-letter">
+                  {letter === ' ' ? '\u00A0' : letter}
+                </span>
+              ))}
+            </span>
+          </h1>
+
+          <h2 className="text-xl sm:text-2xl font-semibold mb-5 text-gray-200">
+            <span className="typing-text">{text}</span>
+            <span className="cursor">|</span>
+          </h2>
+
+          <p className="text-base sm:text-lg text-slate-300 mb-6">
+            I build modern, responsive web applications with smooth UI and
+            delightful interactions.
+          </p>
+
+          {/* Social Links */}
+          <div className="flex justify-center lg:justify-start gap-4 mb-8">
             <a
               href="https://github.com/Jabedhossain101"
               target="_blank"
-              rel="noopener noreferrer"
+              className="text-sky-400 text-2xl hover:text-white hover:scale-110 transition duration-300"
             >
               <FaGithub />
             </a>
             <a
               href="https://www.linkedin.com/in/mdjabedhossain12/"
               target="_blank"
-              rel="noopener noreferrer"
+              className="text-sky-400 text-2xl hover:text-white hover:scale-110 transition duration-300"
             >
               <FaLinkedin />
             </a>
             <a
               href="https://www.facebook.com/mdjabedhossain27"
               target="_blank"
-              rel="noopener noreferrer"
+              className="text-sky-400 text-2xl hover:text-white hover:scale-110 transition duration-300"
             >
               <FaFacebook />
             </a>
-          </motion.div>
+          </div>
 
-          <div
-            style={{
-              display: 'flex',
-              gap: 12,
-              alignItems: 'center',
-              flexWrap: 'wrap',
-            }}
-          >
-            <motion.a
+          {/* Buttons */}
+          <div className="flex justify-center lg:justify-start gap-3 flex-wrap">
+            <a
               href="#contact"
-              className="banner-btn"
-              whileHover={{
-                scale: 1.08,
-                backgroundColor: '#00c6ff',
-                color: '#fff',
-              }}
-              transition={{ type: 'spring', stiffness: 300 }}
+              className="py-3 px-6 text-lg font-semibold text-sky-500 bg-white rounded-full shadow-lg hover:shadow-sky-500/50 transition duration-300"
             >
               Contact Me
-            </motion.a>
+            </a>
 
-            <motion.button
+            <button
               onClick={handleResumeClick}
-              className="resume-btn"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 300 }}
+              className="py-3 px-6 text-lg font-bold text-white rounded-full bg-gradient-to-r from-sky-500 to-blue-600 shadow-lg hover:shadow-blue-600/50 transition duration-300"
             >
               <div className="flex items-center gap-2">
-                <FaArrowDown className="text-2xl" />{' '}
+                <FaArrowDown className="text-xl" />
                 <span>Download Resume</span>
               </div>
-            </motion.button>
+            </button>
           </div>
         </div>
-        <div className="alien-spaceship">
-          <img
-            src="https://i.ibb.co.com/hF1qjXC5/istockphoto-1473516483-612x612-removebg-preview.png"
-            alt="Alien Spaceship"
-          />
-        </div>
 
-        <motion.div
-          className="banner-image"
-          initial={{ scale: 0, rotate: -100, opacity: 0 }}
-          animate={{ scale: 1, rotate: 0, opacity: 1 }}
-          transition={{ delay: 0.4, duration: 1.2, type: 'spring' }}
-        >
+        {/* Profile Image */}
+        <div className="lg:w-1/2 mt-10 lg:mt-0 flex justify-center lg:justify-end">
           <img
             src="https://i.ibb.co.com/R4HTggDd/photo-2025-08-23-16-30-51.jpg"
             alt="MD Jabed Hossain"
+            className="max-w-[300px] sm:max-w-[400px] w-full rounded-[20%] border-4 border-sky-400 shadow-2xl shadow-sky-400/50"
           />
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
 
-      <style>{`
-        .banner { min-height: 90vh; display: flex; align-items: center; justify-content: center; background: #000; color: #fff; padding: 3rem 1rem; position: relative; overflow: hidden; }
-        .banner-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-
-        /* Stars */
-        .star { position: absolute; background: #fff; border-radius: 50%; opacity: 0.3; animation: twinkle 2s infinite alternate; }
-        @keyframes twinkle { 0% { opacity: 0.1; } 50% { opacity: 1; } 100% { opacity: 0.1; } }
-
-        /* Sun */
-        .sun {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 40px;
-          height: 40px;
-          background: radial-gradient(circle, red, #ff8c00);
-          border-radius: 50%;
-          box-shadow: 0 0 50px 20px rgba(255, 215, 0, 0.7);
-          transform: translate(-50%, -50%);
-          z-index: 1;
+      <style global jsx>{`
+        .highlight {
+          background: linear-gradient(90deg, #00c6ff, #0072ff);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
 
-        /* Orbits */
-        .orbit { position: absolute; border: 1px dashed rgba(255,255,255,0.2); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: rotate 25s linear infinite; }
-        .orbit1 { width: 120px; height: 120px; animation-duration: 10s; }
-        .orbit2 { width: 180px; height: 180px; animation-duration: 15s; }
-        .orbit3 { width: 240px; height: 240px; animation-duration: 20s; }
-        .orbit4 { width: 300px; height: 300px; animation-duration: 25s; }
-        .orbit5 { width: 380px; height: 380px; animation-duration: 30s; }
-        .orbit6 { width: 460px; height: 460px; animation-duration: 35s; }
-        .orbit7 { width: 540px; height: 540px; animation-duration: 40s; }
-        .orbit8 { width: 640px; height: 640px; animation-duration: 45s; }
-
-        /* Planets realistic colors */
-        .planet { width: 24px; height: 24px; border-radius: 50%; position: absolute; top: 0; left: 50%; transform: translateX(-50%); }
-        .planet1 { background: #b0b0b0; } /* Mercury */
-        .planet2 { background: #e6c28b; } /* Venus */
-        .planet3 { background: #2e86de; border: 1px solid #fff; } /* Earth */
-        .planet4 { background: #d14b3d; } /* Mars */
-        .planet5 { background: #f4d03f; } /* Jupiter */
-        .planet6 { background: #f5e1a4; border: 1px solid #d4af37; } /* Saturn */
-        .planet7 { background: #7fdbff; } /* Uranus */
-        .planet8 { background: #4169e1; } /* Neptune */
-
-        @keyframes rotate { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
-
-        /* Alien spaceship animation */
-        .alien-spaceship {
-          position: absolute;
-          top: 20%;
-          left: -100px;
-          z-index: 2;
-          animation: flySpaceship 15s linear infinite;
+        .wave-letter {
+          display: inline-block;
+          transition: transform 0.3s ease, color 0.3s ease;
         }
-        .alien-spaceship img { width: 60px; transform: rotate(-20deg); }
-        @keyframes flySpaceship { 0% { left: -100px; top: 20%; } 50% { left: 110%; top: 40%; } 100% { left: -100px; top: 20%; } }
+        .wave-letter:hover {
+          transform: translateY(-8px) rotate(5deg);
+          color: #ffd700;
+        }
 
-        /* Banner wrapper content styling */
-        .banner-wrapper { display: flex; flex-direction: row; align-items: center; justify-content: space-between; max-width: 1200px; width: 100%; gap: 2rem; flex-wrap: wrap; position: relative; z-index: 3; }
-        .banner-content { flex: 1 1 500px; text-align: left; }
-        .banner-title { font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; }
-        .highlight { color: #00c6ff; background: linear-gradient(90deg, #00c6ff 40%, #0072ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .banner-subtitle { font-size: 1.5rem; font-weight: 600; margin-bottom: 1.2rem; color: #e0e0e0; }
-        .banner-desc { font-size: 1.1rem; color: #cfd8dc; margin-bottom: 1.5rem; }
+        .typing-text {
+          color: #00ffb3;
+        }
+        .cursor {
+          display: inline-block;
+          animation: blink 0.8s infinite;
+          color: #00ffb3;
+          margin-left: 3px;
+        }
+        @keyframes blink {
+          50% {
+            opacity: 0;
+          }
+        }
 
-        .social-links { display: flex; gap: 15px; margin-bottom: 2rem; }
-        .social-links a { color: #00c6ff; font-size: 1.6rem; transition: 0.3s; }
-        .social-links a:hover { color: #fff; transform: scale(1.1); }
+        @keyframes twinkle {
+          0% {
+            opacity: 0.3;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0.3;
+          }
+        }
 
-        .banner-btn { padding: 0.8rem 2.2rem; font-size: 1.1rem; font-weight: 600; color: #00c6ff; background: #fff; border-radius: 30px; text-decoration: none; }
-        .resume-btn { padding: 0.8rem 1.6rem; font-size: 1rem; font-weight: 700; color: #fff; background: linear-gradient(90deg,#00c6ff 0%, #0072ff 100%); border: none; border-radius: 30px; cursor: pointer; }
-
-        .banner-image img { max-width: 400px; width: 100%; border-radius: 20%; border: 5px solid #00c6ff; box-shadow: 0 10px 25px rgba(0,198,255,0.3); }
+        @keyframes rotatePlanet {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
       `}</style>
     </section>
   );
