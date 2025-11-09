@@ -8,6 +8,7 @@ import {
   FiMessageSquare,
 } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
+import Footer from '../Components/Footer';
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -232,6 +233,7 @@ const Contact = () => {
           </motion.form>
         </motion.div>
       </div>
+      <Footer></Footer>
 
       {/* --- Internal Styles --- */}
       <style>{`
