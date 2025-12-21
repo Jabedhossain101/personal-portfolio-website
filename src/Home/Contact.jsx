@@ -9,10 +9,23 @@ import {
 } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import Footer from '../Components/Footer';
+// 🚀 EmailJS import করা হয়েছে
+import emailjs from '@emailjs/browser';
+
+// 🔑 আপনার EmailJS Credentials
+const SERVICE_ID = 'service_egnre6s';
+const TEMPLATE_ID = 'template_ez96z3d';
+const PUBLIC_KEY = 'kUTbONSZ43fSDNYxt';
+// 🎯 রিসিভারের ইমেল, যদিও এটি EmailJS টেমপ্লেটে সেট করা উচিত,
+// তবুও to_name এর জন্য একটি নাম ব্যবহার করা হয়েছে।
+const RECEIVER_NAME = 'Ahmed Rafsan';
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
+  // 'submitted' এর পরিবর্তে 'loading' এবং 'success' state ব্যবহার করা হয়েছে।
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
   const [shootingStars, setShootingStars] = useState([]);
 
   // 🔹 Handle form change
@@ -21,14 +34,37 @@ const Contact = () => {
   };
 
   // 🔹 Handle form submit
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
+    setLoading(true);
+    setError(null);
+
+    const templateParams = {
+      from_name: form.name,
+      from_email: form.email,
+      to_name: RECEIVER_NAME,
+      message: form.message,
+    };
+
+    try {
+      // 🚀 EmailJS দিয়ে ইমেল পাঠানো হচ্ছে
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+
+      setSuccess(true);
       setForm({ name: '', email: '', message: '' });
-    }, 3000);
-    console.log('Form submitted:', form);
+      console.log('Email sent successfully!');
+
+      // সফল বার্তাটি ৩ সেকেন্ড পর সরিয়ে দেওয়া
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err) {
+      console.error('Error sending email:', err);
+      setError('Failed to send message. Please try again.');
+
+      // এরর বার্তাটি ৫ সেকেন্ড পর সরিয়ে দেওয়া
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // 🔹 Smooth Fire Cursor Effect (optimized for performance)
@@ -214,13 +250,17 @@ const Contact = () => {
               className="contact-btn-premium"
               whileHover={{ scale: 1.03, boxShadow: '0 0 25px #00c6ff' }}
               whileTap={{ scale: 0.97 }}
-              disabled={submitted}
+              disabled={loading} // ইমেল পাঠানো সময় বাটন ডিজেবল থাকবে
             >
               <FiSend className="btn-icon" />
-              {submitted ? 'Message Sent!' : 'Send Secure Message'}
+              {loading
+                ? 'Sending...'
+                : success
+                ? 'Message Sent!'
+                : 'Send Secure Message'}
             </motion.button>
 
-            {submitted && (
+            {success && (
               <motion.div
                 className="contact-success-premium"
                 initial={{ opacity: 0, y: 10 }}
@@ -230,10 +270,20 @@ const Contact = () => {
                 Thank you for reaching out! I’ll be in touch soon.
               </motion.div>
             )}
+
+            {error && (
+              <motion.div
+                className="contact-error-premium"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                {error}
+              </motion.div>
+            )}
           </motion.form>
         </motion.div>
       </div>
-      <Footer></Footer>
 
       {/* --- Internal Styles --- */}
       <style>{`
@@ -353,6 +403,7 @@ const Contact = () => {
           border: none;
           cursor: pointer;
           min-width: 200px;
+          transition: background 0.3s;
         }
         .contact-btn-premium:disabled {
           background: #30363d;
@@ -362,6 +413,11 @@ const Contact = () => {
         .contact-success-premium {
           margin-top: 0.5rem;
           color: #2e90e8;
+          font-weight: 500;
+        }
+        .contact-error-premium {
+          margin-top: 0.5rem;
+          color: #f85149; /* Error red color */
           font-weight: 500;
         }
         .fire-particle-premium {
