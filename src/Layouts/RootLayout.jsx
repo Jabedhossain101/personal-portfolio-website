@@ -9,6 +9,8 @@ import Projects from '../Home/Projects';
 import Skills from '../Home/Skills';
 import Contact from '../Home/Contact';
 import Education from '../Home/Education';
+import Foot from '../Home/Foot';
+import ContactInfo from '../Home/ContactInfo';
 
 
 const RootLayout = () => {
@@ -20,9 +22,11 @@ const RootLayout = () => {
       <Skills></Skills>
       <Education></Education>
       <Projects></Projects>
+      <ContactInfo></ContactInfo>
       
       <Contact></Contact>
       {/* <Footer></Footer> */}
+      <Foot></Foot>
     </div>
   );
 };
