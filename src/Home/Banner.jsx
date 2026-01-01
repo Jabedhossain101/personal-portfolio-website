@@ -218,7 +218,7 @@ const Banner = () => {
         {/* Profile Image */}
         <div className="lg:w-1/2 mt-10 lg:mt-0 flex justify-center lg:justify-end">
           <img
-            src="https://i.ibb.co.com/R4HTggDd/photo-2025-08-23-16-30-51.jpg"
+            src="https://i.ibb.co.com/0jPc1ttD/boss.png"
             alt="MD Jabed Hossain"
             className="max-w-[300px] sm:max-w-[400px] w-full rounded-[20%] border-4 border-sky-400 shadow-2xl shadow-sky-400/50"
           />
