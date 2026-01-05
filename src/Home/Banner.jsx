@@ -148,7 +148,7 @@ const Banner = () => {
       >
         {/* Text Section */}
         <div className="lg:w-1/2 text-center lg:text-left">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold mb-4">
             Hi, I'm{' '}
             <span className="highlight name-animation">
               {'MD Jabed Hossain'.split('').map((letter, i) => (

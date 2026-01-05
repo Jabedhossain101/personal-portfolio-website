@@ -58,7 +58,7 @@ const Navbar = () => {
   return (
     <motion.nav
       // Tailwind classes for the modern transparent sticky navbar
-      className="sticky top-0 z-50 py-3 bg-black/60 backdrop-blur-md shadow-lg shadow-sky-900/10 transition-all duration-300"
+      className="sticky top-0 z-50 py-3 backdrop-blur-md shadow-lg shadow-sky-900/10 transition-all duration-300 bg-transparent"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 80, duration: 0.5 }}
@@ -69,7 +69,7 @@ const Navbar = () => {
           className="text-2xl font-extrabold tracking-wider text-sky-400"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.2 }}
         >
           MD Jabed Hossain
         </motion.div>
