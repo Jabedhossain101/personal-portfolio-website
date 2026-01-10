@@ -14,7 +14,7 @@ import {
 
 // Google Drive link for the resume
 const RESUME_URL =
-  'https://drive.google.com/file/d/1E01sAL5TFBq9RRwMgKkd2ObisZkybU0V/view'; // direct download link
+  'https://drive.google.com/file/d/1FIbJOj8h0g00rhw3W2y3D3FGJTa4Q5nH/view?usp=sharing'; // direct download link
 
 const navLinks = [
   { href: '#home', icon: FaHome, text: 'Home' },
